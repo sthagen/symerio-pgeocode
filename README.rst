@@ -1,16 +1,17 @@
 pgeocode
 ========
 
-|pypi| |rdfd| |travisci|
+|pypi| |rdfd| |GHactions|
 
 .. |pypi| image:: https://img.shields.io/pypi/v/pgeocode.svg
    :target: https://pypi.org/project/pgeocode/
-   
+
 .. |rdfd| image:: https://readthedocs.org/projects/pgeocode/badge/?version=latest
     :target: http://pgeocode.readthedocs.io/
 
-.. |travisci| image:: https://travis-ci.org/symerio/pgeocode.svg?branch=master
-   :target: https://travis-ci.org/symerio/pgeocode
+.. |GHactions| image:: https://github.com/symerio/pgeocode/workflows/Test/badge.svg
+   :target: https://github.com/symerio/pgeocode/actions?query=branch%3Amaster+
+
 
 Postal code geocoding and distance calculations
 
@@ -27,7 +28,7 @@ For additional documentation see `pgeocode.readthedocs.io <https://pgeocode.read
 Installation
 ------------
 
-pgeocode requires Python 2.7 or 3.5+ as well as ``numpy`` and ``pandas`` packages. It can be installed with,
+pgeocode requires Python 3.6+ as well as ``numpy`` and ``pandas`` packages. It can be installed with,
 
 .. code::
 
@@ -45,7 +46,7 @@ Quickstart
     >>> nomi = pgeocode.Nominatim('fr')
     >>> nomi.query_postal_code("75013")
     postal_code               75013
-    country code                 FR
+    country_code                 FR
     place_name             Paris 13
     state_name        Île-de-France
     state_code                   11
@@ -79,9 +80,9 @@ Geocoding format
 
 The result of a geo-localistion query is a ``pandas.DataFrame`` with the following columns,
 
-* ``country code``: iso country code, 2 characters
-* ``postal code`` : postal code
-* ``place name``  : place name (e.g. town, city etc)
+* ``country_code``: iso country code, 2 characters
+* ``postal_code`` : postal code
+* ``place_name``  : place name (e.g. town, city etc)
 * ``state_name`` : 1. order subdivision (state)
 * ``state_code`` : 1. order subdivision (state)
 * ``county_name`` : 2. order subdivision (county/province)
@@ -101,6 +102,27 @@ Configuration and defaults
 Defaults to ``~/pgeocode_data``, it is the directory where data is downloaded
 for later consumption. It can be changed using the environment variable
 ``PGEOCODE_DATA_DIR``, i.e. ``export PGEOCODE_DATA_DIR=/tmp/pgeocode_data``.
+
+**Data sources**
+
+Data sources are provided as a list in the ``pgeocode.DOWNLOAD_URL`` variable.
+The default value is,
+
+.. code:: python
+
+    DOWNLOAD_URL = [
+        "https://download.geonames.org/export/zip/{country}.zip",
+        "https://symerio.github.io/postal-codes-data/data/geonames/{country}.txt",
+    ]
+
+Data sources are tried from first to last until one works. Here the second link is a mirror
+of the first.
+
+It is also possible to extend this variable with third party data sources, as
+long as they follow the same format. See for instance
+`postal-codes-data <https://github.com/symerio/postal-codes-data/tree/master/data/geonames>`_
+repository for examples of data files.
+
 
 License
 -------
